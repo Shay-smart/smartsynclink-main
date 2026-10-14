@@ -19,18 +19,19 @@ export const defaultHomeContent = {
     primary: { label: "Book Your Free Strategy Call", href: "#call" } as Cta,
     secondary: { label: "Book A 15-Min Demo Call", href: "#call" } as Cta,
     stats: [
-      "Trusted By 3,000+ Businesses",
-      "250,000+ Leads Managed",
-      "500K+ Appointments Booked",
-      "92.9% Uptime",
-      "4.5/5 Average Rating",
+      // what it does, not numbers we can't stand behind
+      "AI Answers Calls 24/7",
+      "Missed Calls Texted Back",
+      "Booked Into Your Calendar",
+      "Every Channel In One Inbox",
+      "Set Up For You",
     ],
     // The "Did You Know?" band under the hero, about Sofia — the booking
     // band's shape with her orb in it. #demo opens her (DemoModal). An empty
     // heading hides the band.
     assistant: {
       eyebrow: "Did You Know?",
-      heading: "Sofia, our AI assistant, answers every call and message 24/7 — and books the appointment while the lead is still interested.",
+      heading: "Sofia, our AI assistant, answers every call and message 24/7 and books the appointment while the lead is still interested.",
       /** Painted in the accent colour wherever it appears in the heading. */
       highlight: "24/7",
       cta: { label: "Have A Chat With Sofia", href: "#demo" } as Cta,
@@ -115,9 +116,9 @@ export const defaultHomeContent = {
     // full width band across the top of the section
     booking: {
       eyebrow: "Did You Know?",
-      heading: "Businesses that reply in under a minute book 57% more appointments. Here's how SmartSyncLink gets you there.",
+      heading: "The business that replies first usually wins the booking. Here's how SmartSyncLink makes sure that's you.",
       /** Painted in the accent colour wherever it appears in the heading. */
-      highlight: "57%",
+      highlight: "replies first",
       body: "Twenty minutes, no slide deck. We look at where calls and messages are going today, then show you exactly what the AI would have caught.",
       // One action, because there was only ever one: the two buttons here used
       // to be "Book An Appointment" and "Book A 15-Min Demo Call", which is the
@@ -139,7 +140,7 @@ export const defaultHomeContent = {
       bullets: [
         {
           title: "Never Miss A Call",
-          body: "When you cannot pick up, the AI does — and it sounds like a person.",
+          body: "When you can't pick up, the AI does. And it sounds like a person.",
         },
         {
           title: "Intelligent Routing",
@@ -321,7 +322,7 @@ export const defaultHomeContent = {
      */
     funnel: {
       heading: "Funnels that turn clicks into booked calls.",
-      body: "Conversion-focused funnel pages, lead capture and automated follow-up — built, hosted and connected to your SmartSync Suite.",
+      body: "Conversion-focused funnel pages, lead capture and automated follow-up. Built, hosted and connected to your SmartSync Suite.",
       highlights: ["Done-for-you funnel pages", "Lead capture on every step", "Automated follow-up", "Live conversion metrics"],
       priceLabel: "Starts at",
       price: "$297",
@@ -407,13 +408,13 @@ export const defaultHomeContent = {
   /** SmartSync Site: the website we build. The drawing is the page's own industry (see SITES). */
   site: {
     heading: "A Website That Brings In Leads, Wired Straight Into Your Suite.",
-    body: "We design, build and host a fast, mobile-first website for your business — quote forms, click-to-call and live chat on every page. Every one of them is connected to your SmartSync Suite, so a visitor becomes a lead the moment they reach out.",
+    body: "We design, build and host a fast, mobile-first website for your business, with quote forms, click-to-call and live chat on every page. Every one of them is connected to your SmartSync Suite, so a visitor becomes a lead the moment they reach out.",
     cta: { label: "Book A Website Call", href: "#call" } as Cta,
     /** Numbered on the drawing in this order: the form, the call button, the chat. */
     features: [
       {
         title: "Lead Form → Suite Inbox",
-        body: "Every request — a quote, a booking, a showing — lands in your inbox with the details, and AI replies in seconds.",
+        body: "Every request (a quote, a booking, a showing) lands in your inbox with the details, and AI replies in seconds.",
       },
       {
         title: "Click-To-Call → AI Answers",
@@ -491,7 +492,7 @@ export const defaultHomeContent = {
     role: "Support Agent",
     avatar: { src: "", alt: "Sofia, AI support agent" } as Media,
     /** What Sofia types when the phone opens, pointing at the call button under it. */
-    callHint: "Please press the phone button to test our voice AI — it's totally free.",
+    callHint: "Please press the phone button to test our voice AI. It's totally free.",
     /** The LeadConnector voice widget. Empty hides the embed. */
     widgetId: "69e0ba00663add6222d0a27d",
   },

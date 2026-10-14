@@ -411,9 +411,9 @@ const THREADS_BY = {
 
 /** What the AI sends back in the live demo, in THREADS order. The demo cycles through these threads. */
 export const REPLIES = [
-  "Of course! We have Thursday 11 AM open — shall I book it?",
+  "Of course! We have Thursday 11 AM open. Shall I book it?",
   "No problem! Want me to hold a spot for next week instead?",
-  "Sorry we missed you — calling you back in 2 minutes.",
+  "Sorry we missed you! Calling you back in 2 minutes.",
   "You're unsubscribed. Reply START anytime to rejoin.",
   "Yes! Friday at 2:30 PM is open. Shall I book it?",
 ];
@@ -422,8 +422,8 @@ export const LIVE_COUNT = REPLIES.length;
 /** The first thread is the visitor from the website, so its reply answers what they asked. */
 const FIRST_REPLY: Record<Story, string> = {
   medspa: REPLIES[0],
-  contractor: "Absolutely! A tech can come out Thursday 10 AM for a free quote — shall I book it?",
-  realtor: "Yes! 412 Oak Lane is open Thursday at 5 PM — shall I book your showing?",
+  contractor: "Absolutely! A tech can come out Thursday 10 AM for a free quote. Shall I book it?",
+  realtor: "Yes! 412 Oak Lane is open Thursday at 5 PM. Shall I book your showing?",
 };
 export const repliesFor = (story: Story = "medspa") => [FIRST_REPLY[story], ...REPLIES.slice(1)];
 

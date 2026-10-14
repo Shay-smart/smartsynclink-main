@@ -735,9 +735,7 @@ export function SolutionArt({ slug, className = "" }: { slug: string; className?
   const art = ART[slug];
   if (!art) return null;
   return (
-    <div className={`relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#052EFF] via-[#2414F2] to-[#3300EA] shadow-[0_40px_80px_-40px_rgba(51,0,234,0.75)] ${className}`}>
-      <span aria-hidden="true" className="sol-art-grid pointer-events-none absolute inset-0" />
-      <span aria-hidden="true" className="pointer-events-none absolute -top-24 -right-20 size-80 rounded-full bg-white/15 blur-3xl" />
+    <div className={`relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#052EFF] to-[#3300EA] ${className}`}>
       <div role="img" aria-label={art.label} className="suite-stage relative" style={{ aspectRatio: `${W} / ${H}` }}>
         <div className="suite-board" style={{ width: W, height: H, ["--stage-w" as string]: `${W}px` }}>
           {art.draw()}

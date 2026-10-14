@@ -14,7 +14,7 @@ import { Icon, iconFor, industryIcon } from "./icons";
 
 type Tone = "plain" | "white" | "dark";
 /** Every section gets its content, its ground, and the phrases its heading paints. */
-type Props = { s: Section; tone: Tone; hl: string[] };
+type Props = { s: Section; tone: Tone };
 
 /* ------------------------------------------------------------- building blocks */
 
@@ -64,28 +64,18 @@ export function Hl({ text, terms = [], dark = false }: { text: string; terms?: s
   );
 }
 
+/** A section's label: one quiet line of text above its heading. */
 export function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium tracking-[0.08em] uppercase ${
-        dark ? "bg-white/10 text-white/85" : "bg-brand/8 text-brand"
-      }`}
-    >
-      <span className={`size-1.5 rounded-full ${dark ? "bg-white/70" : "bg-brand"}`} />
-      {children}
-    </span>
-  );
+  return <span className={`block text-[15px] font-medium ${dark ? "text-white/60" : "text-brand"}`}>{children}</span>;
 }
 
 function Head({
-  hl = [],
   eyebrow,
   title,
   intro,
   center = false,
   dark = false,
 }: {
-  hl?: string[];
   eyebrow: string;
   title: string;
   intro?: string;
@@ -96,11 +86,11 @@ function Head({
     <div className={center ? "mx-auto max-w-[780px] text-center" : "max-w-[640px]"}>
       <Eyebrow dark={dark}>{eyebrow}</Eyebrow>
       <h2
-        className={`mt-5 text-balance text-[31px] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[42px] ${
+        className={`mt-3 text-balance text-[31px] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[42px] ${
           dark ? "text-white" : "text-ink"
         }`}
       >
-        <Hl text={title} terms={hl} dark={dark} />
+        {title}
       </h2>
       {intro ? (
         <Md
@@ -120,12 +110,6 @@ function Shell({ id, tone, children }: { id: string; tone: Tone; children: React
     // clip, not hidden: overflow:hidden makes the section its own scroll box, and the
     // sticky headings inside would stick to it (pushed down, never following the page)
     <section id={id} className={`relative scroll-mt-24 overflow-clip py-16 md:py-24 ${bg}`}>
-      {tone === "dark" ? (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(51,0,234,0.45),transparent)]"
-        />
-      ) : null}
       <Container className="relative">{children}</Container>
     </section>
   );
@@ -137,7 +121,7 @@ const cardBg = (tone: Tone) => (tone === "white" ? "bg-[#F8F8F9]" : "bg-white");
 function IconTile({ n, tone = "soft" }: { n: ReturnType<typeof iconFor>; tone?: "soft" | "solid" | "glass" }) {
   const look = {
     soft: "bg-brand-soft text-brand",
-    solid: "bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white shadow-[0_8px_20px_-8px_rgba(51,0,234,0.6)]",
+    solid: "bg-brand-soft text-brand",
     glass: "bg-white/10 text-white ring-1 ring-white/15",
   }[tone];
   return (
@@ -153,7 +137,7 @@ const paragraphs = (md: string) => md.split(/\n{2,}/).map((p) => p.trim()).filte
 /* ------------------------------------------------------------------ problem */
 
 /** The page's opening: what goes wrong today, as cards, and the answer picked out under them. */
-function Problem({ s, tone, hl }: Props) {
+function Problem({ s, tone }: Props) {
   // a section of plain paragraphs: the first leads, the last is the fix, the ones between are the pains
   const prose = s.kind === "prose" ? paragraphs(s.intro) : null;
   const outro = paragraphs(s.outro);
@@ -166,7 +150,7 @@ function Problem({ s, tone, hl }: Props) {
     <Shell id={s.id} tone={tone}>
       <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
         <div className="lg:sticky lg:top-28">
-          <Head hl={hl} eyebrow="The problem" title={s.title} intro={intro} />
+          <Head eyebrow="The problem" title={s.title} intro={intro} />
           {outro.length ? <Md md={outro.join("\n\n")} className="mt-5 max-w-[640px] text-[16.5px] leading-[1.65] text-[#1E1E1E]/80" /> : null}
         </div>
 
@@ -186,16 +170,11 @@ function Problem({ s, tone, hl }: Props) {
               ))}
             </Reveal>
           ) : (
-            <Reveal className="grid gap-3" stagger={0.07}>
+            <Reveal className="grid divide-y divide-line border-y border-line" stagger={0.07}>
               {items.map((item) => (
-                <div
-                  key={item.title + item.body}
-                  className={`flex gap-4 rounded-2xl border border-line p-5 shadow-[0_1px_2px_rgba(14,14,20,0.04)] ${cardBg(tone)}`}
-                >
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#FDECEC] text-[#D93636]">
-                    <Icon n="x" className="size-4" sw={2.4} />
-                  </span>
-                  <div className="min-w-0 pt-1">
+                <div key={item.title + item.body} className="flex gap-4 py-5">
+                  <Icon n="x" className="mt-1 size-4 shrink-0 text-[#C2410C]" sw={2.4} />
+                  <div className="min-w-0">
                     {item.title ? (
                       <p className="text-[17px] font-medium leading-snug text-ink">
                         <Inline text={item.title} />
@@ -209,12 +188,9 @@ function Problem({ s, tone, hl }: Props) {
           )}
 
           {answer ? (
-            <div className="relative mt-4 overflow-hidden rounded-2xl bg-gradient-to-br from-[#052EFF] to-[#3300EA] p-6 text-white shadow-[0_20px_40px_-20px_rgba(51,0,234,0.7)] sm:p-7">
-              <span aria-hidden="true" className="pointer-events-none absolute -right-10 -bottom-16 size-48 rounded-full bg-white/10" />
-              <span className="relative flex items-center gap-2 text-[12.5px] font-medium tracking-[0.08em] text-white/80 uppercase">
-                <Icon n="sparkle" className="size-4" /> The fix
-              </span>
-              <Md md={answer} className="sol-md-light relative mt-2 text-[17px] leading-[1.6]" />
+            <div className="mt-8 border-l-2 border-brand pl-5">
+              <span className="text-[15px] font-medium text-brand">The fix</span>
+              <Md md={answer} className="mt-1.5 text-[18px] leading-[1.6] text-ink" />
             </div>
           ) : null}
         </div>
@@ -238,16 +214,15 @@ const SPANS: Record<number, number[]> = {
 };
 const SPAN_CLASS: Record<number, string> = { 2: "lg:col-span-2", 3: "lg:col-span-3", 4: "lg:col-span-4", 6: "lg:col-span-6" };
 
-function Features({ s, tone, hl }: Props) {
+function Features({ s, tone }: Props) {
   const spans = SPANS[s.items.length] ?? s.items.map(() => 2);
-  let featured = 0;
   return (
     <Shell id={s.id} tone={tone}>
-      <Head hl={hl} eyebrow="What you get" title={s.title} intro={s.intro} center />
+      <Head eyebrow="What you get" title={s.title} intro={s.intro} center />
       <Reveal className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-6" stagger={0.06}>
         {s.items.map((item, i) => {
           const big = spans[i] >= 4;
-          const look = big ? (featured++ % 2 ? "gradient" : "dark") : "card";
+          const look = big ? "dark" : "card";
           const odd = s.items.length % 2 === 1 && i === s.items.length - 1;
           return (
             <article
@@ -255,22 +230,9 @@ function Features({ s, tone, hl }: Props) {
               className={`relative flex flex-col overflow-hidden rounded-[24px] p-7 ${SPAN_CLASS[spans[i]]} ${odd ? "md:col-span-2" : ""} ${
                 look === "dark"
                   ? "bg-[#0E0E14] text-white"
-                  : look === "gradient"
-                    ? "bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white"
-                    : `border border-line ${cardBg(tone)}`
+                  : `border border-line ${cardBg(tone)}`
               } ${big ? "lg:min-h-[260px]" : ""}`}
             >
-              {big ? (
-                <>
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute -top-24 -right-16 size-72 rounded-full ${
-                      look === "dark" ? "bg-[radial-gradient(closest-side,rgba(51,0,234,0.6),transparent)]" : "bg-white/10"
-                    }`}
-                  />
-                  <Icon n={iconFor(item.title, item.body)} className="pointer-events-none absolute right-6 bottom-6 hidden size-32 text-white/[0.07] sm:block" sw={1.25} />
-                </>
-              ) : null}
               <IconTile n={iconFor(item.title, item.body)} tone={big ? "glass" : "soft"} />
               <h3 className={`relative mt-6 text-[20px] font-medium leading-snug tracking-[-0.01em] ${big ? "text-white sm:text-[24px]" : "text-ink"}`}>
                 {item.title}
@@ -291,15 +253,15 @@ function Features({ s, tone, hl }: Props) {
 /* -------------------------------------------------------------------- cards */
 
 /** Industries: one card each, with its icon; a pipeline in the text shows as its stages. */
-function Cards({ s, tone, hl }: Props) {
+function Cards({ s, tone }: Props) {
   return (
     <Shell id={s.id} tone={tone}>
-      <Head hl={hl} eyebrow="By industry" title={s.title} intro={s.intro} />
+      <Head eyebrow="By industry" title={s.title} intro={s.intro} />
       <Reveal className="mt-12 flex flex-wrap justify-center gap-4" stagger={0.06}>
         {s.items.map((item) => (
           <article
             key={item.title}
-            className={`group flex w-full flex-col rounded-[24px] border border-line p-7 transition-[border-color,box-shadow] hover:border-brand/30 hover:shadow-[0_20px_40px_-24px_rgba(51,0,234,0.35)] md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)] ${cardBg(tone)}`}
+            className={`group flex w-full flex-col rounded-[24px] border border-line p-7 transition-colors hover:border-brand/40 md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)] ${cardBg(tone)}`}
           >
             <IconTile n={industryIcon(item.title)} tone="solid" />
             <h3 className="mt-6 text-[19px] font-medium leading-snug tracking-[-0.01em] text-ink">
@@ -323,9 +285,7 @@ function Value({ text, ours }: { text: string; ours: boolean }) {
   if (ours) {
     return (
       <span className="flex items-start gap-2.5 font-medium text-ink">
-        <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
-          <Icon n="check" className="size-3" sw={3} />
-        </span>
+        <Icon n="check" className="mt-0.5 size-4 shrink-0 text-brand" sw={2.6} />
         {text}
       </span>
     );
@@ -357,28 +317,21 @@ function Value({ text, ours }: { text: string; ours: boolean }) {
 function Pairs({ head, rows }: { head: string[]; rows: string[][] }) {
   return (
     <div className="mx-auto mt-12 max-w-[960px]">
-      <div className="hidden grid-cols-[1fr_56px_1fr] items-center px-2 pb-4 text-[13px] font-medium tracking-[0.08em] uppercase md:grid">
+      <div className="hidden grid-cols-2 gap-8 pb-4 text-[15px] font-medium md:grid">
         <span className="text-muted">{head[0]}</span>
-        <span />
         <span className="text-brand">{head[1]}</span>
       </div>
-      <Reveal className="grid gap-3" stagger={0.05}>
+      <Reveal className="grid divide-y divide-line border-y border-line" stagger={0.05}>
         {rows.map(([from, to]) => (
-          <div key={from} className="grid items-stretch gap-2 md:grid-cols-[1fr_56px_1fr]">
-            <div className="flex items-center rounded-2xl border border-line bg-white px-5 py-4 text-[15.5px] text-[#1E1E1E]/75">
-              <span className="mr-2 text-[12px] font-medium tracking-[0.08em] text-muted uppercase md:hidden">{head[0]} ·</span>
+          <div key={from} className="grid gap-2 py-5 md:grid-cols-2 md:gap-8">
+            <p className="text-[15.5px] text-[#1E1E1E]/65">
+              <span className="mr-1.5 text-[13px] font-medium text-muted md:hidden">{head[0]}:</span>
               {from}
-            </div>
-            <span className="grid place-items-center text-brand">
-              <Icon n="arrowRight" className="hidden size-5 md:block" sw={2} />
-              <Icon n="arrowDown" className="size-5 md:hidden" sw={2} />
-            </span>
-            <div className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#F1EEFF] to-[#F6F4FF] px-5 py-4 text-[15.5px] font-medium text-ink ring-1 ring-brand/15">
-              <span className="grid size-6 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
-                <Icon n="check" className="size-3.5" sw={3} />
-              </span>
+            </p>
+            <p className="flex gap-2.5 text-[15.5px] font-medium text-ink">
+              <Icon n="check" className="size-4 shrink-0 text-brand" sw={2.6} />
               {to}
-            </div>
+            </p>
           </div>
         ))}
       </Reveal>
@@ -395,22 +348,13 @@ function Grid({ head, rows }: { head: string[]; rows: string[][] }) {
       <div className="relative mt-12 hidden md:block">
         {/* our column, raised above the table, behind its cells */}
         <div className="pointer-events-none absolute -inset-y-3 inset-x-0 grid" style={cols}>
-          <span style={{ gridColumn: `${head.length} / ${head.length + 1}` }} className="rounded-[24px] bg-gradient-to-b from-[#F1EEFF] to-[#F8F7FF] ring-1 ring-brand/15" />
+          <span style={{ gridColumn: `${head.length} / ${head.length + 1}` }} className="rounded-[20px] bg-brand-soft/60" />
         </div>
         <div className="relative">
           <div className="grid items-end" style={cols}>
             {head.map((h, i) => (
               <div key={i} className={`px-6 pt-4 pb-5 text-[15px] font-medium ${i === ours ? "text-brand" : "text-muted"}`}>
-                {i === ours ? (
-                  <span className="flex items-center gap-2">
-                    <span className="grid size-6 place-items-center rounded-lg bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
-                      <Icon n="sparkle" className="size-3.5" sw={2} />
-                    </span>
-                    {h}
-                  </span>
-                ) : (
-                  h
-                )}
+                {h}
               </div>
             ))}
           </div>
@@ -443,19 +387,14 @@ function Grid({ head, rows }: { head: string[]; rows: string[][] }) {
   );
 }
 
-function Compare({ s, tone, hl }: Props) {
+function Compare({ s, tone }: Props) {
   const t = s.table!;
   return (
     <Shell id={s.id} tone={tone}>
-      <Head hl={hl} eyebrow="Compare" title={s.title} intro={s.intro} center />
+      <Head eyebrow="Compare" title={s.title} intro={s.intro} center />
       {t.head.length === 2 ? <Pairs head={t.head} rows={t.rows} /> : <Grid head={t.head} rows={t.rows} />}
       {s.outro ? (
-        <div className="mx-auto mt-10 flex max-w-[780px] gap-4 rounded-2xl border border-line bg-white p-6">
-          <span className="mt-0.5 shrink-0 text-brand">
-            <Icon n="sparkle" className="size-5" />
-          </span>
-          <Md md={s.outro} className="text-[16px] leading-[1.65] text-[#1E1E1E]/80" />
-        </div>
+        <Md md={s.outro} className="mx-auto mt-10 max-w-[680px] text-center text-[16px] leading-[1.65] text-[#1E1E1E]/75" />
       ) : null}
     </Shell>
   );
@@ -474,21 +413,21 @@ function TextBubble({ text }: { text: string }) {
   );
 }
 
-function Steps({ s, tone, hl }: Props) {
+function Steps({ s, tone }: Props) {
   const across = s.items.length <= 5 && s.items.every((item) => item.title && !item.quote);
   const cols = { 3: "lg:grid-cols-3", 4: "lg:grid-cols-4", 5: "lg:grid-cols-5" }[s.items.length] ?? "lg:grid-cols-4";
 
   if (across) {
     return (
       <Shell id={s.id} tone={tone}>
-        <Head hl={hl} eyebrow="How it works" title={s.title} intro={s.intro} center />
+        <Head eyebrow="How it works" title={s.title} intro={s.intro} center />
         <div className="relative mt-14">
-          <span aria-hidden="true" className="absolute top-6 right-[8%] left-[8%] hidden border-t-2 border-dashed border-brand/20 lg:block" />
+          <span aria-hidden="true" className="absolute top-6 right-[8%] left-[8%] hidden border-t border-line lg:block" />
           <Reveal className={`relative grid gap-4 sm:grid-cols-2 ${cols}`} stagger={0.08}>
             {s.items.map((item, i) => (
               <article key={item.title} className="flex flex-col items-start lg:items-center lg:text-center">
                 <span
-                  className={`grid size-12 place-items-center rounded-full bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-[18px] font-medium text-white shadow-[0_10px_24px_-10px_rgba(51,0,234,0.7)] ring-8 ${
+                  className={`grid size-12 place-items-center rounded-full border border-brand/25 bg-white text-[17px] font-medium text-brand ring-8 ${
                     tone === "white" ? "ring-white" : "ring-[#FAFAF9]"
                   }`}
                 >
@@ -513,19 +452,19 @@ function Steps({ s, tone, hl }: Props) {
     <Shell id={s.id} tone={tone}>
       <div className="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div className="lg:sticky lg:top-28">
-          <Head hl={hl} eyebrow="How it works" title={s.title} intro={s.intro} />
+          <Head eyebrow="How it works" title={s.title} intro={s.intro} />
           {s.outro ? <StepsOutro md={s.outro} className="mt-8 hidden lg:flex" /> : null}
         </div>
         <Reveal as="ul" className="relative" stagger={0.07}>
           {s.items.map((item, i) => (
             <li key={i} className="relative flex gap-5 pb-8 last:pb-0">
               {i < s.items.length - 1 ? (
-                <span aria-hidden="true" className="absolute top-12 bottom-0 left-[23px] w-px bg-gradient-to-b from-brand/30 to-brand/5" />
+                <span aria-hidden="true" className="absolute top-12 bottom-0 left-[23px] w-px bg-line" />
               ) : null}
-              <span className="relative grid size-12 shrink-0 place-items-center rounded-full bg-white text-[17px] font-medium text-brand shadow-[0_6px_18px_-8px_rgba(14,14,20,0.25)] ring-1 ring-line">
+              <span className="relative grid size-12 shrink-0 place-items-center rounded-full border border-brand/25 bg-white text-[17px] font-medium text-brand">
                 {i + 1}
               </span>
-              <div className={`min-w-0 flex-1 rounded-[20px] border border-line px-5 py-4 ${cardBg(tone)}`}>
+              <div className="min-w-0 flex-1 pt-2.5">
                 {item.title ? (
                   <h3 className="text-[17px] font-medium leading-snug text-ink">
                     <Inline text={item.title} />
@@ -551,9 +490,8 @@ function Steps({ s, tone, hl }: Props) {
 
 function StepsOutro({ md, className }: { md: string; className: string }) {
   return (
-    <div className={`max-w-[560px] gap-3 rounded-2xl bg-gradient-to-br from-[#052EFF] to-[#3300EA] p-5 text-white ${className}`}>
-      <Icon n="sparkle" className="mt-0.5 size-5 shrink-0" />
-      <Md md={md} className="sol-md-light text-[16px] leading-[1.6]" />
+    <div className={`max-w-[560px] border-l-2 border-brand pl-5 ${className}`}>
+      <Md md={md} className="text-[17px] leading-[1.6] text-ink" />
     </div>
   );
 }
@@ -569,17 +507,17 @@ function channelOf(label: string) {
   return { n: "sms" as const, name: "Text" };
 }
 
-function Chats({ s, hl }: { s: Section; hl: string[] }) {
+function Chats({ s }: { s: Section }) {
   const cols = s.chats.length % 3 === 0 ? "lg:grid-cols-3" : s.chats.length % 2 === 0 ? "lg:grid-cols-2" : "lg:grid-cols-3";
   return (
     <Shell id={s.id} tone="dark">
-      <Head hl={hl} eyebrow="See it in action" title={s.title} intro={s.intro} center dark />
+      <Head eyebrow="See it in action" title={s.title} intro={s.intro} center dark />
       <Reveal className={`mx-auto mt-12 grid max-w-[1180px] gap-4 md:grid-cols-2 ${cols}`} stagger={0.08}>
         {s.chats.map((chat, i) => {
           const channel = channelOf(chat.label);
           const single = chat.lines.every((line) => !line.who);
           return (
-            <article key={i} className="flex flex-col rounded-[24px] border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm">
+            <article key={i} className="flex flex-col rounded-[24px] border border-white/10 bg-white/[0.05] p-5">
               <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
                 <span className="grid size-8 place-items-center rounded-full bg-white/10 text-white">
                   <Icon n={channel.n} className="size-4" />
@@ -595,7 +533,7 @@ function Chats({ s, hl }: { s: Section; hl: string[] }) {
                       <p
                         className={`max-w-[88%] px-4 py-2.5 text-[15px] leading-[1.5] ${
                           ours
-                            ? "rounded-2xl rounded-br-md bg-gradient-to-br from-[#2C4BFF] to-[#5A2BFF] text-white"
+                            ? "rounded-2xl rounded-br-md bg-brand text-white"
                             : "rounded-2xl rounded-bl-md bg-white/10 text-white/90"
                         }`}
                       >
@@ -621,17 +559,17 @@ function Chats({ s, hl }: { s: Section; hl: string[] }) {
 
 /* -------------------------------------------------------------------- links */
 
-function Links({ s, tone, hl }: Props) {
+function Links({ s, tone }: Props) {
   const cols = s.items.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3";
   return (
     <Shell id={s.id} tone={tone}>
-      <Head hl={hl} eyebrow="Connected system" title={s.title} intro={s.intro} center />
+      <Head eyebrow="Connected system" title={s.title} intro={s.intro} center />
       <Reveal className={`mt-12 grid gap-4 md:grid-cols-2 ${cols}`} stagger={0.07}>
         {s.items.map((item) => (
           <Link
             key={item.title}
             href={item.href!}
-            className={`group flex flex-col rounded-[24px] border border-line p-7 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_20px_40px_-24px_rgba(51,0,234,0.4)] ${cardBg(tone)}`}
+            className={`group flex flex-col rounded-[24px] border border-line p-7 transition-colors hover:border-brand/40 ${cardBg(tone)}`}
           >
             <IconTile n={iconFor(item.title)} tone="solid" />
             <h3 className="mt-6 text-[19px] font-medium tracking-[-0.01em] text-ink">{item.title}</h3>
@@ -650,14 +588,14 @@ function Links({ s, tone, hl }: Props) {
 
 /* --------------------------------------------------------------------- list */
 
-function List({ s, tone, hl }: Props) {
+function List({ s, tone }: Props) {
   const titled = s.items.some((item) => item.title);
 
   if (titled) {
     const four = s.items.length >= 7 || s.items.length === 4;
     return (
       <Shell id={s.id} tone={tone}>
-        <Head hl={hl} eyebrow="Highlights" title={s.title} intro={s.intro} center />
+        <Head eyebrow="Highlights" title={s.title} intro={s.intro} center />
         <Reveal className="mt-12 flex flex-wrap justify-center gap-4" stagger={0.05}>
           {s.items.map((item: Item) => (
             <article
@@ -682,14 +620,12 @@ function List({ s, tone, hl }: Props) {
   return (
     <Shell id={s.id} tone={tone}>
       <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-        <Head hl={hl} eyebrow="Checklist" title={s.title} intro={s.intro} />
-        <div className={`rounded-[28px] border border-line p-3 shadow-[0_30px_60px_-40px_rgba(14,14,20,0.35)] ${cardBg(tone)}`}>
+        <Head eyebrow="Checklist" title={s.title} intro={s.intro} />
+        <div className={`rounded-[24px] border border-line p-3 ${cardBg(tone)}`}>
           <Reveal as="ul" className="grid gap-1" stagger={0.05}>
             {s.items.map((item) => (
               <li key={item.body} className="flex items-start gap-3.5 rounded-2xl px-4 py-3.5 transition-colors hover:bg-brand/[0.04]">
-                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
-                  <Icon n="check" className="size-3.5" sw={3} />
-                </span>
+                <Icon n="check" className="mt-1 size-4 shrink-0 text-brand" sw={2.6} />
                 <Md md={item.body} className="text-[16px] leading-[1.55] text-ink" />
               </li>
             ))}
@@ -704,17 +640,13 @@ function List({ s, tone, hl }: Props) {
 /* ------------------------------------------------------------------- prose */
 
 /** A short section on its own: a statement card, heading on the left and the words on the right. */
-function Statement({ s, tone, hl }: Props) {
+function Statement({ s, tone }: Props) {
   return (
     <Shell id={s.id} tone={tone}>
-      <div className="relative overflow-hidden rounded-[32px] border border-brand/10 bg-gradient-to-br from-[#F3F0FF] via-white to-white p-7 sm:p-12 lg:p-16">
-        <span aria-hidden="true" className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-brand/[0.06]" />
-        <div className="relative grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+      <div className={`rounded-[28px] border border-line p-7 sm:p-12 lg:p-16 ${cardBg(tone)}`}>
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
-            <IconTile n={iconFor(s.title, s.intro)} tone="solid" />
-            <h2 className="mt-6 text-balance text-[28px] font-medium leading-[1.12] tracking-[-0.03em] text-ink sm:text-[36px]">
-              <Hl text={s.title} terms={hl} />
-            </h2>
+            <h2 className="text-balance text-[28px] font-medium leading-[1.12] tracking-[-0.03em] text-ink sm:text-[36px]">{s.title}</h2>
           </div>
           <Md md={s.intro} className="text-[17px] leading-[1.7] text-[#1E1E1E]/85 lg:pt-2" />
         </div>
@@ -725,27 +657,27 @@ function Statement({ s, tone, hl }: Props) {
 
 /* --------------------------------------------------------------- dispatch */
 
-export function SolutionSection({ s, index, hl }: { s: Section; index: number; hl: string[] }) {
+export function SolutionSection({ s, index }: { s: Section; index: number }) {
   // the page alternates its ground so sections read apart; the chats are always dark
   const tone: Tone = index % 2 ? "white" : "plain";
-  if (index === 0) return <Problem s={s} tone={tone} hl={hl} />;
+  if (index === 0) return <Problem s={s} tone={tone} />;
   switch (s.kind) {
     case "features":
-      return <Features s={s} tone={tone} hl={hl} />;
+      return <Features s={s} tone={tone} />;
     case "cards":
-      return <Cards s={s} tone={tone} hl={hl} />;
+      return <Cards s={s} tone={tone} />;
     case "compare":
-      return <Compare s={s} tone={tone} hl={hl} />;
+      return <Compare s={s} tone={tone} />;
     case "steps":
-      return <Steps s={s} tone={tone} hl={hl} />;
+      return <Steps s={s} tone={tone} />;
     case "chats":
-      return <Chats s={s} hl={hl} />;
+      return <Chats s={s} />;
     case "links":
-      return <Links s={s} tone={tone} hl={hl} />;
+      return <Links s={s} tone={tone} />;
     case "list":
-      return <List s={s} tone={tone} hl={hl} />;
+      return <List s={s} tone={tone} />;
     default:
-      return <Statement s={s} tone={tone} hl={hl} />;
+      return <Statement s={s} tone={tone} />;
   }
 }
 
@@ -755,18 +687,16 @@ export function SolutionFaq({
   title,
   items,
   demo,
-  hl,
 }: {
   title: string;
   items: { q: string; a: string }[];
   demo: { label: string; href: string };
-  hl: string[];
 }) {
   return (
     <Shell id="faq" tone="plain">
       <div className="grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <div className="lg:sticky lg:top-28">
-          <Head hl={hl} eyebrow="FAQ" title={title} />
+          <Head eyebrow="FAQ" title={title} />
           <p className="mt-5 max-w-[42ch] text-[16px] leading-[1.65] text-[#1E1E1E]/75">
             Still wondering how it would work for your business? Ask us on a live demo.
           </p>

@@ -63,10 +63,10 @@ export const defaultIndustry = {
     // The first thing a visitor reads: we build the website, and the Suite is
     // wired into it. Everything else on the page follows from that.
     badge: "MED SPA WEBSITES + SMARTSYNC SUITE",
-    heading: "We Build Your Med Spa Website — And Connect It To An AI That Books Clients.",
+    heading: "We Build Your Med Spa Website, Then Connect It To An AI That Books Clients.",
     body: "A custom website for your treatments, designed, built and hosted by us. Every form, chat and call from it goes straight into your SmartSync Suite.",
     body2:
-      "There, AI answers in seconds, qualifies the lead and books the consultation — so your new site doesn't just look good, it fills your calendar.",
+      "There, AI answers in seconds, qualifies the lead and books the consultation. Your new site doesn't just look good, it fills your calendar.",
     primary: { label: "Get More Booking", href: "#contact" } as Cta,
     secondary: { label: "See How It Works", href: "#journey" } as Cta,
     stats: [
@@ -96,8 +96,8 @@ export const defaultIndustry = {
     /** The "Did You Know?" band shown above this section. Empty heading hides it. */
     notice: {
       eyebrow: "Did You Know?",
-      heading: "Businesses that reply in under a minute book 57% more appointments. Here's how SmartSyncLink gets you there.",
-      highlight: "57%",
+      heading: "The business that replies first usually wins the booking. Here's how SmartSyncLink makes sure that's you.",
+      highlight: "replies first",
       cta: { label: "Book An Appointment", href: "#contact" } as Cta,
       secondary: { label: "Book A 15-Min Demo Call", href: "#call" } as Cta,
     },

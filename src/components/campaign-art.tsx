@@ -231,7 +231,7 @@ function ReviewCard({ x, y }: { x: number; y: number }) {
           </svg>
         ))}
         <T x={130} y={21} s={12.5} w={600} c={GREEN}>
-          <span data-ca="done">Review left — reminders stop</span>
+          <span data-ca="done">Review left, reminders stop</span>
         </T>
       </Box>
     </Card>

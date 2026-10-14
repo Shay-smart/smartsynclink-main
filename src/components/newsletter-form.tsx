@@ -10,7 +10,8 @@ import { useId, useState, type FormEvent } from "react";
  *
  * With `details` (the footer) it also asks for a phone, a business name and
  * an industry — name, email and industry required, the rest optional — and
- * the button runs the full width under them.
+ * the button runs the full width under them. With `message` as well (the
+ * blog's inquiry) it asks what they need, in a box above the button.
  *
  * Every field is 16px: iOS Safari zooms the page into any input set smaller
  * than that the moment it is tapped.
@@ -37,6 +38,7 @@ export function NewsletterForm({
   success,
   size = "md",
   details,
+  message,
   className = "",
 }: {
   where: "footer" | "blog";
@@ -46,6 +48,8 @@ export function NewsletterForm({
   success: string;
   size?: Size;
   details?: NewsletterDetails;
+  /** The placeholder of a "what do you need?" box; without it there is none. */
+  message?: string;
   className?: string;
 }) {
   const id = useId();
@@ -68,15 +72,16 @@ export function NewsletterForm({
           ...(details
             ? { phone: form.get("phone") || undefined, business: form.get("business") || undefined, industry: form.get("industry") }
             : {}),
+          ...(message ? { message: form.get("message") } : {}),
           where,
           page: window.location.pathname,
         }),
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || "That didn't go through — please try again.");
+      if (!response.ok) throw new Error(data.error || "That didn't go through. Please try again.");
       setState("done");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "That didn't go through — please try again.");
+      setError(reason instanceof Error ? reason.message : "That didn't go through. Please try again.");
       setState("error");
     }
   }
@@ -190,6 +195,23 @@ export function NewsletterForm({
               <path d="m6 9 6 6 6-6" />
             </svg>
           </div>
+          {message ? (
+            <>
+              <label className="sr-only" htmlFor={`${id}-message`}>
+                {message}
+              </label>
+              <textarea
+                id={`${id}-message`}
+                name="message"
+                required
+                minLength={3}
+                maxLength={2000}
+                rows={3}
+                placeholder={message}
+                className={`${FIELD.md} resize-none rounded-2xl leading-snug`}
+              />
+            </>
+          ) : null}
           <button
             type="submit"
             disabled={sending}

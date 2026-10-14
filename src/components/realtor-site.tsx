@@ -79,7 +79,7 @@ export function RealtorSite({ mode = "stage" }: { mode?: SiteMode }) {
       <T x={56} y={354} s={72} w={700} c={GREEN_DEEP} style={{ fontFamily: SERIF, letterSpacing: -1.5 }}>
         Front <span style={{ color: GOLD }}>Door.</span>
       </T>
-      {["Local agents, real answers and showings booked", "around your schedule — not ours."].map((line, i) => (
+      {["Local agents, real answers and showings booked", "around your schedule, not ours."].map((line, i) => (
         <T key={line} x={60} y={420 + i * 30} s={18} c={MUTED}>
           {line}
         </T>

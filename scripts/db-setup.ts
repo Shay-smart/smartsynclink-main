@@ -133,6 +133,26 @@ await sql`
   )`;
 await sql`create index if not exists bookings_recent_idx on bookings (created_at desc)`;
 
+/* ----------------------------------------------------- form submissions -- */
+
+// Every website form submission (footer newsletter, blog inquiry), listed in
+// the admin. GHL gets the contact too; `ghl` records whether it did.
+await sql`
+  create table if not exists form_submissions (
+    id         uuid primary key default gen_random_uuid(),
+    form       text not null,
+    name       text not null,
+    email      text not null,
+    phone      text not null default '',
+    business   text not null default '',
+    industry   text not null default '',
+    message    text not null default '',
+    page       text not null default '',
+    ghl        text not null default 'off',
+    created_at timestamptz not null default now()
+  )`;
+await sql`create index if not exists form_submissions_recent_idx on form_submissions (created_at desc)`;
+
 /* ------------------------------------------------------------ ai config -- */
 
 // Single-row connection settings. Separate from blog_autopilot, which holds

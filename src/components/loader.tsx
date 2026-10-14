@@ -33,6 +33,9 @@ const MAX_MS = 3500;
  * Only runs once. It lives in the root layout and stays mounted across client
  * navigation, so it never reappears between pages.
  */
+/** The logo's height on the loader, in px. */
+const LOGO = 56;
+
 export function Loader() {
   const root = useRef<HTMLDivElement>(null);
   const [gone, setGone] = useState(false);
@@ -93,16 +96,22 @@ export function Loader() {
   return (
     <div
       ref={root}
-      className="site-loader fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-7 bg-page"
+      className="site-loader fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-3 bg-page"
       role="status"
       aria-live="polite"
     >
       <div className="loader-logo">
-        <SiteLogo height={56} label="SmartSyncLink" />
+        <SiteLogo height={LOGO} label="SmartSyncLink" />
       </div>
 
-      {/* word by word in CSS (.loader-word), so the line starts with the first paint, not the script */}
-      <p aria-hidden="true" className="loader-line px-6 text-center text-[16px] font-medium tracking-[-0.01em] text-[#1e1e1e] sm:text-[18px]">
+      {/* word by word in CSS (.loader-word), so the line starts with the first paint, not the script.
+          Centred under the name rather than the whole lockup: the round mark on the
+          name's left puts the lockup's centre 0.61 logo-heights left of the name's. */}
+      <p
+        aria-hidden="true"
+        className="loader-line px-6 text-center text-[16px] font-medium tracking-[-0.01em] text-[#1e1e1e] sm:text-[18px]"
+        style={{ translate: `${LOGO * 0.61}px 0` }}
+      >
         {TAGLINE.map(([word, accent], i) => (
           <span
             key={i}

@@ -196,7 +196,7 @@ export const defaultGlobal = {
     ],
     newsletter: {
       heading: "Get Practical Automation Tips Delivered to Your Inbox",
-      body: "Join thousands of business owners receiving proven strategies, product updates, and automation insights.",
+      body: "Practical strategies, product updates and automation ideas for local businesses.",
       namePlaceholder: "Your Name",
       placeholder: "Email Address",
       phonePlaceholder: "Phone (optional)",
@@ -204,10 +204,10 @@ export const defaultGlobal = {
       industryPlaceholder: "Your industry",
       /** The industry choices; the one picked is tagged on the contact in GHL. */
       industries: ["Med Spa & Aesthetics", "Contractor & Home Services", "Real Estate", "Other"],
-      note: "No spam — just practical tips. Unsubscribe anytime.",
+      note: "No spam, just practical tips. Unsubscribe anytime.",
       cta: { label: "Subscribe", href: "#subscribe" } as Cta,
       /** Shown in place of the form once the person is in GHL. */
-      success: "Thanks — you're subscribed.",
+      success: "Thanks, you're subscribed.",
     },
     contact: {
       phone: "+1 737 252-4262",
@@ -219,9 +219,9 @@ export const defaultGlobal = {
     copyright: "© 2026 Smart Sync Link. All rights reserved.",
     badges: [
       "Enterprise-Grade Security",
-      "99.9% Uptime",
+      "Set Up For You",
       "Secure Cloud Infrastructure",
-      "4.5/5 Average Rating",
+      "Built For Local Businesses",
     ],
   },
 };

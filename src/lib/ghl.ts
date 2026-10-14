@@ -138,6 +138,11 @@ export async function upsertContact(person: {
   return id;
 }
 
+/** A note on a contact: what someone wrote in a website form. */
+export async function addNote(contactId: string, body: string) {
+  await call(`/contacts/${contactId}/notes`, { version: CONTACTS, method: "POST", body: { body } });
+}
+
 /**
  * A newsletter sign-up: the person upserted by email, then tagged.
  *

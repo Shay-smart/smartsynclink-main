@@ -43,7 +43,7 @@ export function AppHeader({ active }: { active: "funnel" | "metrics" }) {
       <Box x={0} y={62} w={FUNNEL_BOARD.w} h={1} style={{ background: LINE }} />
       <Ico n="home" x={27 + shift} y={32} s={20} c={INK} />
       <T x={60 + shift} y={32} s={17} w={600}>
-        Hydrafacial $149 — Skin Diagnostic (Oak ...
+        Hydrafacial $149: Skin Diagnostic (Oak ...
       </T>
       <Box x={413 + shift * 4} y={16} w={67} h={32} style={{ background: PILL, borderRadius: 8 }} />
       <Ico n="sparkle" x={428 + shift * 4} y={32} s={13} c={INK} sw={2} />
@@ -207,7 +207,7 @@ export function PagePreview({ x, y, h = 720 }: { x: number; y: number; h?: numbe
 
       {[
         "Most facials start with a guess. Yours starts",
-        "with a professional skin analysis — and five",
+        "with a professional skin analysis and five",
         "quick questions that get sent ahead to",
         "your esthetician.",
       ].map((line, i) => (

@@ -180,7 +180,7 @@ export function VisitorSite({ mode = "stage" }: { mode?: SiteMode }) {
         </T>
       ))}
       {[
-        "Advanced treatments, real results — hydrafacials,",
+        "Advanced treatments, real results: hydrafacials,",
         "injectables and skin analysis by licensed clinicians.",
       ].map((line, i) => (
         <T key={line} x={60} y={410 + i * 30} s={18} c={MUTED}>

@@ -33,7 +33,7 @@ const NEEDS = [
   "AI receptionist for calls",
   "One inbox for every message",
   "Funnels and booking pages",
-  "Everything — the full setup",
+  "Everything, the full setup",
 ];
 
 export function BookingForm({

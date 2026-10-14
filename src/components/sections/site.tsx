@@ -1,9 +1,8 @@
 import type { CSSProperties } from "react";
 import type { HomeContent } from "@/content/home";
-import { STORIES, type Story } from "@/lib/stage-intro";
+import type { Story } from "@/lib/stage-intro";
 import { Reveal } from "../reveal";
-import { CARD } from "../site-mockup";
-import { SITES } from "../story-sites";
+import { SHOWCASE } from "../story-sites";
 import { BOARD, PHONE, PhoneFrame } from "../suite-mockup";
 import { SuiteLockup } from "../suite-logo";
 import { Button, Container } from "../ui";
@@ -21,19 +20,19 @@ const DESK = { w: PHONE_AT.x + PHONE.w, h: PHONE_AT.y + PHONE.h };
 
 /**
  * SmartSync Site: the website half of "website + system". The page's own
- * industry — a med spa, a plumber, an agent — drawn on the desktop and the
- * phone, the same drawing its Suite intro opens on, with numbered pins on the
- * three things that feed the Suite: the form, the call button, the chat.
+ * industry — a med spa, a plumber, an agent — on the desktop and the phone,
+ * a different website from the one its Suite intro plays on (SHOWCASE), with
+ * numbered pins on the three things that feed the Suite: the form, the call
+ * button, the chat.
  */
 export function Site({ data, story = "medspa" }: { data: HomeContent["site"]; story?: Story }) {
-  const { Desktop, Mobile, call } = SITES[story];
-  const live = STORIES[story].live;
+  const { Desktop, Mobile, form, call, chat } = SHOWCASE[story];
   // in the order of `features`: the form, the call button, the chat
   const deskPins: [number, number][] = [
-    [CARD.x, CARD.y],
+    form,
     call,
     // beside the phone's chat button, not on it
-    [PHONE_AT.x + SCREEN.x + 236, PHONE_AT.y + SCREEN.y + 579],
+    [PHONE_AT.x + SCREEN.x + chat[0], PHONE_AT.y + SCREEN.y + chat[1]],
   ];
   return (
     <section id="site" className="relative overflow-hidden py-14 md:py-24 lg:py-28">
@@ -75,15 +74,6 @@ export function Site({ data, story = "medspa" }: { data: HomeContent["site"]; st
             </li>
           ))}
         </Reveal>
-
-        {live ? (
-          <p className="mt-8 text-center text-[15px] text-muted">
-            Drawn from a live client site: {live.name}, {live.place}.{" "}
-            <a href={live.url} target="_blank" rel="noopener noreferrer" className="font-medium whitespace-nowrap text-brand hover:underline">
-              Visit {live.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} <span aria-hidden="true">↗</span>
-            </a>
-          </p>
-        ) : null}
       </Container>
     </section>
   );

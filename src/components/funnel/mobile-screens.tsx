@@ -64,7 +64,7 @@ function FunnelHeader({ active }: { active: "Funnel" | "Metrics" }) {
       <Box x={0} y={0} w={FUNNEL_MOBILE.w} h={52} style={{ background: "#fff" }} />
       <Ico n="home" x={22} y={26} s={18} c={INK} />
       <T x={42} y={26} s={14} w={600} style={{ maxWidth: 232, overflow: "hidden", textOverflow: "ellipsis" }}>
-        Hydrafacial $149 — Skin Diagnostic (Oak ...
+        Hydrafacial $149: Skin Diagnostic (Oak ...
       </T>
       <Box x={290} y={10} w={86} h={32} style={{ background: F_BLUE, borderRadius: 8 }} />
       <T x={333} y={26} s={13.5} w={500} c="#fff" align="center">

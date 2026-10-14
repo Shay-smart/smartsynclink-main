@@ -2,13 +2,17 @@
 
 import { SiteLogo } from "@/components/site-logo";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "@/lib/auth-client";
 import { Btn, Field, inputClass } from "@/components/admin/ui";
 
+/**
+ * The editors' sign-in. Written so the browser offers to remember the login:
+ * the email is the form's `username` (what password managers pair with
+ * `current-password`), Chrome is handed the credential to save, and a real
+ * page load follows, which is what browsers watch for after a sign-in.
+ */
 export default function LoginPage() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -18,18 +22,20 @@ export default function LoginPage() {
     setError(null);
 
     const form = new FormData(event.currentTarget);
-    const { error } = await signIn.email({
-      email: String(form.get("email")),
-      password: String(form.get("password")),
-    });
+    const email = String(form.get("email"));
+    const password = String(form.get("password"));
+    const { error } = await signIn.email({ email, password });
 
     if (error) {
       setError(error.message ?? "Could not sign in.");
       setBusy(false);
       return;
     }
-    router.push("/admin");
-    router.refresh();
+    // Chrome and Edge show their "save password?" prompt for this; Safari and Firefox use the page load below
+    const Credential = (window as { PasswordCredential?: new (data: { id: string; password: string }) => Credential }).PasswordCredential;
+    if (Credential) await navigator.credentials.store(new Credential({ id: email, password })).catch(() => {});
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- a full load on purpose (see above)
+    window.location.assign("/admin");
   }
 
   return (
@@ -55,7 +61,7 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              autoComplete="email"
+              autoComplete="username"
               className={inputClass}
             />
           </Field>

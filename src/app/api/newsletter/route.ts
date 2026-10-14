@@ -1,17 +1,22 @@
 import { z } from "zod";
-import { ghlReady, subscribeContact } from "@/lib/ghl";
+import { addNote, ghlReady, subscribeContact } from "@/lib/ghl";
+import { markSubmission, saveSubmission } from "@/lib/submissions";
 
 /**
- * A newsletter sign-up, from the footer on every page or the band on the blog.
+ * The website's two forms: the footer's newsletter sign-up on every page, and
+ * the blog's "tell us what you need" inquiry.
  *
- * The person goes to GHL as a contact tagged `newsletter`, plus where they
- * signed up (`newsletter-footer`, `newsletter-blog`) — a GHL workflow on the
- * tag is what notifies the team. Validated here, not only in the form: this
- * route is open to the internet and the values become a real contact.
+ * Each submission is saved to our own table first (listed in the admin under
+ * Form submissions), so nothing is lost if GHL is down, then sent to GHL as a
+ * contact. The footer's is tagged `newsletter` + `newsletter-footer`; the
+ * blog's is an inquiry, not a subscription, so it is tagged `website-inquiry`
+ * + `inquiry-blog` and its message goes on the contact as a note. A GHL
+ * workflow on those tags is what notifies the team.
  *
- * The footer and blog forms also send a phone, a business name and an industry; the
- * industry becomes a tag too (`industry-real-estate`), so a workflow can
- * send each trade its own emails.
+ * Both forms also send a phone, a business name and an industry; the industry
+ * becomes a tag too (`industry-real-estate`), so a workflow can send each
+ * trade its own emails. Validated here, not only in the form: this route is
+ * open to the internet and the values become a real contact.
  *
  * `company` is a honeypot. The form hides it from people; a bot fills every
  * field it finds, and gets a quiet success that sends nothing.
@@ -29,6 +34,7 @@ const Signup = z.object({
     .optional(),
   business: z.string().trim().max(120).optional(),
   industry: z.string().trim().max(60).optional(),
+  message: z.string().trim().max(2000).optional(),
   company: z.string().max(200).optional(),
 });
 
@@ -40,29 +46,58 @@ export async function POST(request: Request) {
   const signup = parsed.data;
   if (signup.company) return Response.json({ ok: true });
 
+  const inquiry = signup.where === "blog";
+  let id: string | null = null;
+  try {
+    id = await saveSubmission({
+      form: signup.where,
+      name: signup.name,
+      email: signup.email,
+      phone: signup.phone ?? "",
+      business: signup.business ?? "",
+      industry: signup.industry ?? "",
+      message: signup.message ?? "",
+      page: signup.page ?? "",
+    });
+  } catch (error) {
+    // the table is a copy for the admin; GHL below is still the main record
+    console.error("form submission not saved:", error);
+  }
+
   if (!ghlReady()) {
-    console.error("newsletter sign-up dropped: GHL_API_TOKEN / GHL_LOCATION_ID are not set");
-    return Response.json({ error: "Sign-up is unavailable right now — please try again later." }, { status: 503 });
+    console.error("form submission not sent to GHL: GHL_API_TOKEN / GHL_LOCATION_ID are not set");
+    if (id) return Response.json({ ok: true });
+    return Response.json({ error: "That didn't go through. Please try again later." }, { status: 503 });
   }
 
   const industryTag = signup.industry
     ? `industry-${signup.industry.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`
     : null;
+  const tags = inquiry ? ["website-inquiry", "inquiry-blog"] : ["newsletter", `newsletter-${signup.where}`];
 
   try {
-    await subscribeContact(
+    const contact = await subscribeContact(
       {
         name: signup.name,
         email: signup.email,
         phone: signup.phone,
         companyName: signup.business,
-        source: `Website newsletter (${signup.where}${signup.page ? ` — ${signup.page}` : ""})`,
+        source: `Website ${inquiry ? "inquiry" : "newsletter"} (${signup.where}${signup.page ? `, ${signup.page}` : ""})`,
       },
-      ["newsletter", `newsletter-${signup.where}`, ...(industryTag ? [industryTag] : [])],
+      [...tags, ...(industryTag ? [industryTag] : [])],
     );
+    if (signup.message) {
+      await addNote(contact, `Website inquiry: ${signup.message}`).catch((error) => console.error("inquiry note not added:", error));
+    }
+    if (id) await markSubmission(id, "sent").catch(() => {});
     return Response.json({ ok: true });
   } catch (error) {
-    console.error("newsletter sign-up failed:", error);
-    return Response.json({ error: "That didn't go through — please try again." }, { status: 502 });
+    console.error("form submission to GHL failed:", error);
+    if (id) {
+      await markSubmission(id, "failed").catch(() => {});
+      // saved for the team to follow up from the admin, so the visitor is not asked to retry
+      return Response.json({ ok: true });
+    }
+    return Response.json({ error: "That didn't go through. Please try again." }, { status: 502 });
   }
 }

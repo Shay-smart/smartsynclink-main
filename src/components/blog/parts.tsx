@@ -83,14 +83,15 @@ export function NewsletterBand({ blog, form }: { blog: BlogContent; form?: Globa
 
         {/* the footer's form, in a card like the footer's */}
         <div className="rounded-2xl bg-white p-6 shadow-[0_24px_48px_-32px_rgba(51,0,234,0.45)] sm:p-8">
-          {/* into GHL as a contact tagged newsletter + newsletter-blog (+ its industry) */}
+          {/* an inquiry: into GHL tagged website-inquiry + inquiry-blog, the message as a note */}
           <NewsletterForm
             where="blog"
             namePlaceholder={form.namePlaceholder}
             emailPlaceholder={form.placeholder}
-            cta={form.cta.label}
-            success={form.success}
-            details={form}
+            cta={n.cta}
+            success={n.success}
+            details={{ ...form, note: "" }}
+            message={n.message}
             className="w-full"
           />
           <p className="mt-3 px-2 text-[13px] leading-snug text-muted">

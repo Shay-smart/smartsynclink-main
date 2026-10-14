@@ -105,11 +105,6 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
 
       <main>
         <section className="relative overflow-hidden bg-page pt-32 pb-16 md:pt-40 md:pb-24">
-          <span aria-hidden="true" className="sol-hero-grid pointer-events-none absolute inset-0" />
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-48 -right-40 size-[720px] rounded-full bg-[radial-gradient(closest-side,rgba(51,0,234,0.13),transparent)]"
-          />
           <Container className="relative">
             <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.08fr] lg:gap-14">
               <div>
@@ -118,10 +113,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
                     Solutions
                   </Link>
                   <span aria-hidden="true">/</span>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-brand/8 px-3 py-1 font-medium text-brand">
-                    <Icon n={iconFor(service.title)} className="size-4" sw={2} />
-                    {service.title}
-                  </span>
+                  <span className="font-medium text-ink">{service.title}</span>
                 </nav>
                 <h1 className="mt-6 text-balance text-[38px] font-medium leading-[1.05] tracking-[-0.035em] text-ink sm:text-[54px] xl:text-[60px]">
                   <Hl text={seo.heading || service.title} terms={hl} />
@@ -137,9 +129,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
                   <ul className="mt-9 grid gap-3">
                     {proof.map((point) => (
                       <li key={point} className="flex items-center gap-3 text-[15.5px] text-ink">
-                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
-                          <Icon n="check" className="size-3.5" sw={3} />
-                        </span>
+                        <Icon n="check" className="size-4 shrink-0 text-brand" sw={2.6} />
                         {point}
                       </li>
                     ))}
@@ -162,26 +152,26 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
         </section>
 
         {sections.map((section, i) => (
-          <SolutionSection key={section.id} s={section} index={i} hl={hl} />
+          <SolutionSection key={section.id} s={section} index={i} />
         ))}
 
-        {faq.items.length ? <SolutionFaq title={faq.title} items={faq.items} demo={DEMO} hl={hl} /> : null}
+        {faq.items.length ? <SolutionFaq title={faq.title} items={faq.items} demo={DEMO} /> : null}
 
         {others.length ? (
           <section className="bg-white py-16 md:py-24">
             <Container>
               <div className="flex flex-col items-center text-center">
                 <Eyebrow>Keep exploring</Eyebrow>
-                <h2 className="mt-5 text-[31px] font-medium tracking-[-0.03em] text-ink sm:text-[42px]">Works well with</h2>
+                <h2 className="mt-3 text-[31px] font-medium tracking-[-0.03em] text-ink sm:text-[42px]">Works well with</h2>
               </div>
               <ul className="mt-12 grid gap-4 md:grid-cols-3">
                 {others.map((other) => (
                   <li key={other.slug}>
                     <Link
                       href={`/solutions/${other.slug}`}
-                      className="group flex h-full flex-col rounded-[24px] border border-line bg-[#F8F8F9] p-7 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-[0_20px_40px_-24px_rgba(51,0,234,0.4)]"
+                      className="group flex h-full flex-col rounded-[24px] border border-line bg-[#F8F8F9] p-7 transition-colors hover:border-brand/40"
                     >
-                      <span className="grid size-11 place-items-center rounded-xl bg-gradient-to-br from-[#052EFF] to-[#3300EA] text-white">
+                      <span className="grid size-11 place-items-center rounded-xl bg-brand-soft text-brand">
                         <Icon n={iconFor(other.title)} className="size-[22px]" />
                       </span>
                       <span className="mt-6 text-[19px] font-medium tracking-[-0.01em] text-ink">{other.title}</span>
@@ -203,15 +193,10 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
         <section className="py-16 md:py-24">
           <Container>
             <div className="relative overflow-hidden rounded-[32px] bg-[#0E0E14] px-6 py-14 text-center text-white sm:px-12 md:py-20">
-              <span aria-hidden="true" className="sol-art-grid pointer-events-none absolute inset-0 opacity-60" />
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-32 left-1/2 size-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(51,0,234,0.6),transparent)]"
-              />
               <div className="relative">
                 <Eyebrow dark>Live demo · 20 minutes</Eyebrow>
-                <h2 className="mx-auto mt-6 max-w-[22ch] text-balance text-[32px] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[48px]">
-                  <Hl text={seo.cta_heading || `See ${service.title} working on your business`} terms={hl} dark />
+                <h2 className="mx-auto mt-4 max-w-[22ch] text-balance text-[32px] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[48px]">
+                  {seo.cta_heading || `See ${service.title} working on your business`}
                 </h2>
                 <p className="mx-auto mt-5 max-w-[58ch] text-pretty text-[16.5px] leading-[1.7] text-white/70">
                   {seo.cta_text || "A short live demo on your own calls and leads, or pick a plan and start today."}

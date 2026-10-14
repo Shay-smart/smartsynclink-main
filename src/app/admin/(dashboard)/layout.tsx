@@ -15,6 +15,7 @@ const nav = [
   { href: "/admin/services", label: "Services" },
   { href: "/admin/industries", label: "Industries" },
   { href: "/admin/bookings", label: "Bookings" },
+  { href: "/admin/submissions", label: "Form submissions" },
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/autopilot", label: "Blog autopilot" },
   { href: "/admin/settings", label: "Settings" },

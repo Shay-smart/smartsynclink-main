@@ -1,20 +1,56 @@
 import type { ComponentType } from "react";
 import type { Story } from "@/lib/stage-intro";
+import { AESTHETICS_CALL, AESTHETICS_CHAT, AESTHETICS_FORM, AestheticsSite, AestheticsSiteMobile } from "./aesthetics-site";
 import { CONTRACTOR_CALL, ContractorSite, ContractorSiteMobile } from "./contractor-site";
 import { REALTOR_CALL, RealtorSite, RealtorSiteMobile } from "./realtor-site";
-import { MEDSPA_CALL, type SiteMode, VisitorSite, VisitorSiteMobile } from "./site-mockup";
+import {
+  BLUESTEM_CALL,
+  BLUESTEM_CHAT,
+  BLUESTEM_FORM,
+  BluestemSite,
+  BluestemSiteMobile,
+  IRONWOOD_CALL,
+  IRONWOOD_CHAT,
+  IRONWOOD_FORM,
+  IronwoodSite,
+  IronwoodSiteMobile,
+} from "./showcase-sites";
+import { CARD, MEDSPA_CALL, type SiteMode, VisitorSite, VisitorSiteMobile } from "./site-mockup";
 
 /**
- * The drawn website each story opens on, desktop and phone, and where its call
- * button is. All three put the form, the phone's call button and the chat in
- * the same places, so the Suite intro and the Site section's pins fit any of
- * them; only the desktop call button moves.
+ * The website each story opens on, desktop and phone, and where the SmartSync
+ * Site section's pins go on it: the form (on the desktop), the call button (on
+ * the desktop) and the chat (on the phone, in the mobile site's pixels).
+ *
+ * SITES are the drawings the Suite intro plays on. All three put the form, the
+ * phone's call button and the chat in the same places, so the intro's moves fit
+ * any of them; only the desktop call button moves.
  */
-export const SITES: Record<
-  Story,
-  { Desktop: ComponentType<{ mode?: SiteMode }>; Mobile: ComponentType<{ mode?: SiteMode }>; call: [number, number] }
-> = {
-  medspa: { Desktop: VisitorSite, Mobile: VisitorSiteMobile, call: MEDSPA_CALL },
-  contractor: { Desktop: ContractorSite, Mobile: ContractorSiteMobile, call: CONTRACTOR_CALL },
-  realtor: { Desktop: RealtorSite, Mobile: RealtorSiteMobile, call: REALTOR_CALL },
+type Point = [number, number];
+type Site = {
+  Desktop: ComponentType<{ mode?: SiteMode }>;
+  Mobile: ComponentType<{ mode?: SiteMode }>;
+  form: Point;
+  call: Point;
+  chat: Point;
+};
+
+/** The drawings' form card corner, and the spot beside their phone's chat button. */
+const GRID = { form: [CARD.x, CARD.y] as Point, chat: [236, 579] as Point };
+
+export const SITES: Record<Story, Site> = {
+  medspa: { Desktop: VisitorSite, Mobile: VisitorSiteMobile, call: MEDSPA_CALL, ...GRID },
+  contractor: { Desktop: ContractorSite, Mobile: ContractorSiteMobile, call: CONTRACTOR_CALL, ...GRID },
+  realtor: { Desktop: RealtorSite, Mobile: RealtorSiteMobile, call: REALTOR_CALL, ...GRID },
+};
+
+/**
+ * What the SmartSync Site section shows, so it is never the same website as
+ * the Suite's on the same page: for the med spa, the client's own
+ * SmartSyncLink Aesthetics site; for the others, a second drawn site.
+ */
+export const SHOWCASE: Record<Story, Site> = {
+  medspa: { Desktop: AestheticsSite, Mobile: AestheticsSiteMobile, form: AESTHETICS_FORM, call: AESTHETICS_CALL, chat: AESTHETICS_CHAT },
+  contractor: { Desktop: IronwoodSite, Mobile: IronwoodSiteMobile, form: IRONWOOD_FORM, call: IRONWOOD_CALL, chat: IRONWOOD_CHAT },
+  realtor: { Desktop: BluestemSite, Mobile: BluestemSiteMobile, form: BLUESTEM_FORM, call: BLUESTEM_CALL, chat: BLUESTEM_CHAT },
 };

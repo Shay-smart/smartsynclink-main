@@ -114,7 +114,7 @@ export function DemoModal({ data }: { data: HomeContent["demo"] }) {
       role="dialog"
       aria-modal="true"
       aria-hidden={!open}
-      aria-label={`${data.agentName} — ${data.role}`}
+      aria-label={`${data.agentName}, ${data.role}`}
       className={`fixed inset-0 z-[10000] items-center justify-center overflow-y-auto bg-ink/60 p-4 backdrop-blur-sm ${
         open ? "flex" : "hidden"
       }`}

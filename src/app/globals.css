@@ -567,22 +567,6 @@ summary::-webkit-details-marker {
   background: #fff;
   box-shadow: inset 0 0 0 2.5px var(--color-brand);
 }
-/* the hero's faint grid, fading out towards the copy */
-.sol-hero-grid {
-  background-image:
-    linear-gradient(to right, rgba(14, 14, 20, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(14, 14, 20, 0.05) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 80% at 80% 30%, #000 30%, transparent 75%);
-}
-/* the grid inside the brand-coloured picture frames */
-.sol-art-grid {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%);
-}
 /* the caller's voice on the AI Voice Agent picture */
 .sol-wave {
   transform-origin: center;

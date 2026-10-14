@@ -27,8 +27,7 @@ export const VISITOR: Visitor = {
  * reads med spa. Messages are kept to the med spa's length: they have to fit
  * the phone's field and the clock below.
  *
- * `live` is the real site a drawing follows, linked under it in the
- * SmartSync Site section. Luna Med Spa and Oakline Realty are invented.
+ * `live` is the real site a drawing follows. Luna Med Spa and Oakline Realty are invented.
  */
 export type Story = "medspa" | "contractor" | "realtor";
 type StoryData = {

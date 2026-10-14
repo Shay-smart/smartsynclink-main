@@ -25,12 +25,15 @@ export const defaultBlog = {
   /** How many cards sit above the newsletter band. The rest follow below it. */
   beforeNewsletter: 4,
 
+  /** Not a subscription: an inquiry, on the footer form's fields plus what they need. */
   newsletter: {
-    heading: "Don't want to miss anything?",
-    body: "Get SmartSyncLink updates, tutorials and tips right in your mailbox.",
-    // the form itself is the footer's (Footer → Newsletter), so the two never drift apart
-    note: "By entering your email, you agree to our",
-    noteLink: { label: "Privacy Policy.", href: "/privacy" },
+    heading: "Tell us what you need",
+    body: "Leave your details and a line about your business, and we'll get back to you.",
+    message: "What can we help you with?",
+    cta: "Send My Request",
+    success: "Thanks, we've got it. We'll be in touch shortly.",
+    note: "By sending this, you agree to our",
+    noteLink: { label: "Privacy Policy.", href: "/privacy-policy" },
     image: { src: "", alt: "" },
   },
 
