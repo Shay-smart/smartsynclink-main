@@ -70,15 +70,16 @@ function Tile({ n, c = "#3300EA", bg = "#ECEAFE", size = 34 }: { n: IconName; c?
   );
 }
 
-const In = ({ children, w = 220 }: { children: ReactNode; w?: number }) => (
-  <p className="rounded-[14px] rounded-bl-[4px] bg-[#F1F1F4] px-3 py-2 text-[13px] leading-[1.4] text-ink" style={{ maxWidth: w }}>
+/** A chat bubble; `size` is its text size, smaller on a phone's narrow screen. */
+const In = ({ children, w = 220, size = 13 }: { children: ReactNode; w?: number; size?: number }) => (
+  <p className="rounded-[14px] rounded-bl-[4px] bg-[#F1F1F4] px-3 py-2 leading-[1.4] text-ink" style={{ maxWidth: w, fontSize: size }}>
     {children}
   </p>
 );
-const Out = ({ children, w = 220 }: { children: ReactNode; w?: number }) => (
+const Out = ({ children, w = 220, size = 13 }: { children: ReactNode; w?: number; size?: number }) => (
   <p
-    className="ml-auto rounded-[14px] rounded-br-[4px] bg-gradient-to-br from-[#2C4BFF] to-[#5A2BFF] px-3 py-2 text-[13px] leading-[1.4] text-white"
-    style={{ maxWidth: w }}
+    className="ml-auto rounded-[14px] rounded-br-[4px] bg-gradient-to-br from-[#2C4BFF] to-[#5A2BFF] px-3 py-2 leading-[1.4] text-white"
+    style={{ maxWidth: w, fontSize: size }}
   >
     {children}
   </p>
@@ -527,32 +528,32 @@ function Expert() {
 function MissedCall() {
   return (
     <>
-      <At x={156} y={16} w={256} h={428} className="rounded-[44px] bg-[#0E0E14] p-[9px] shadow-[0_30px_60px_-20px_rgba(10,8,60,0.6)]">
-        <div className="flex h-full flex-col overflow-hidden rounded-[36px] bg-white">
-          <div className="flex items-center justify-between px-6 pt-3 text-[11px] font-medium">
+      {/* a phone's own proportions (about 1 : 2.05), the conversation fitting its screen */}
+      <At x={171} y={6} w={218} h={448} className="rounded-[42px] bg-[#0E0E14] p-[8px] shadow-[0_30px_60px_-20px_rgba(10,8,60,0.6)]">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-[34px] bg-white">
+          <div className="flex items-center justify-between px-5 pt-2.5 text-[10.5px] font-medium">
             <span>9:41</span>
-            <span className="h-[18px] w-[72px] rounded-full bg-[#0E0E14]" />
-            <span className="flex gap-1">
-              <span className="h-2 w-3.5 rounded-sm bg-ink" />
-            </span>
+            <span className="h-[17px] w-[62px] rounded-full bg-[#0E0E14]" />
+            <span className="h-2 w-3.5 rounded-sm bg-ink" />
           </div>
-          <div className="mt-3 flex flex-col items-center border-b border-[#EDEDF1] pb-3">
-            <Av text="LS" size={38} bg="#DDF6E9" fg="#1E6B47" />
-            <p className="mt-1 text-[12.5px] font-medium">Lone Star Plumbing</p>
+          <div className="mt-2.5 flex flex-col items-center border-b border-[#EDEDF1] pb-2.5">
+            <Av text="LS" size={30} bg="#DDF6E9" fg="#1E6B47" />
+            <p className="mt-1 text-[12px] font-medium">Lone Star Plumbing</p>
           </div>
-          <div className="flex flex-1 flex-col gap-2 px-3 pt-3">
-            <p className="mx-auto flex items-center gap-1.5 rounded-full bg-[#FDECEC] px-2.5 py-1 text-[11px] font-medium text-[#D93636]">
+          <div className="flex flex-1 flex-col gap-2 px-2.5 pt-2.5">
+            <p className="mx-auto flex items-center gap-1.5 rounded-full bg-[#FDECEC] px-2.5 py-1 text-[10.5px] font-medium text-[#D93636]">
               <Icon n="phone" className="size-3" sw={2.4} /> Missed call · 2:14 PM
             </p>
-            <In w={190}>Hi, this is Lone Star Plumbing. Sorry we missed your call! How can we help?</In>
-            <Out w={170}>My water heater is leaking</Out>
-            <In w={190}>Sorry to hear that! We can be there at 4:30 today. Want me to book it?</In>
-            <Out w={120}>Yes please!</Out>
+            <In w={172} size={11.5}>Hi, this is Lone Star Plumbing. Sorry we missed your call! How can we help?</In>
+            <Out w={150} size={11.5}>My water heater is leaking</Out>
+            <In w={172} size={11.5}>Sorry to hear that! We can be there at 4:30 today. Want me to book it?</In>
+            <Out w={110} size={11.5}>Yes please!</Out>
           </div>
+          <span className="absolute bottom-2 left-1/2 h-[4px] w-[84px] -translate-x-1/2 rounded-full bg-[#0E0E14]" />
         </div>
       </At>
-      <Event x={8} y={84} w={164} n="zap" title="Texted back" sub="4 seconds later" />
-      <Event x={398} y={248} w={154} n="userPlus" {...GREEN} title="Lead saved" sub="In your CRM" />
+      <Event x={8} y={84} w={176} n="zap" title="Texted back" sub="4 seconds later" />
+      <Event x={374} y={250} w={170} n="userPlus" {...GREEN} title="Lead saved" sub="In your CRM" />
     </>
   );
 }
