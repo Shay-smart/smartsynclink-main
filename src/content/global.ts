@@ -216,7 +216,8 @@ export const defaultGlobal = {
       /** Shown as a "Visit us" card that opens the address in Google Maps; empty hides it. */
       address: "8911 N Capital of Texas Hwy, Suite 4200-349, Austin, TX 78759",
     },
-    copyright: "© 2026 Smart Sync Link. All rights reserved.",
+    copyright:
+      "© 2026 Babylon Enterprise LLC d/b/a Smart SyncLink · 8911 N Capital of Texas Hwy, Suite 4200-349, Austin, TX 78759. All rights reserved.",
     badges: [
       "Enterprise-Grade Security",
       "Set Up For You",
