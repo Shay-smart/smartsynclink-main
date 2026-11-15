@@ -8,6 +8,13 @@ import { useEffect, useState } from "react";
 const AFTER_LOAD_MS = 1500;
 /** And never later than this, however long `load` takes to fire. */
 const AT_THE_LATEST_MS = 5000;
+/**
+ * On a phone the widget's greeting bubble lands on top of the hero buttons, so
+ * there it waits until the visitor has scrolled past the hero (or this long).
+ */
+const PHONE_QUERY = "(max-width: 767px)";
+const PHONE_SCROLL_PX = 600;
+const PHONE_AT_THE_LATEST_MS = 20000;
 
 /**
  * The LeadConnector chat bot. Only the loader script is ours to add: it builds
@@ -29,6 +36,19 @@ export function ChatWidget() {
   useEffect(() => {
     const timers: number[] = [];
     const go = () => setReady(true);
+
+    if (window.matchMedia(PHONE_QUERY).matches) {
+      const onScroll = () => {
+        if (window.scrollY > PHONE_SCROLL_PX) go();
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      timers.push(window.setTimeout(go, PHONE_AT_THE_LATEST_MS));
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        timers.forEach((t) => window.clearTimeout(t));
+      };
+    }
+
     const afterLoad = () => timers.push(window.setTimeout(go, AFTER_LOAD_MS));
     if (document.readyState === "complete") afterLoad();
     else window.addEventListener("load", afterLoad, { once: true });

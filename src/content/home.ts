@@ -200,21 +200,21 @@ export const defaultHomeContent = {
         // the template the editor copies when you press Add — an empty array
         // would leave it with nothing to clone.
         frames: [{ src: "", alt: "" }] as Media[],
-        cta: { label: "Get More Booking", href: "#contact" } as Cta,
+        cta: { label: "Get More Bookings", href: "#contact" } as Cta,
       },
       {
         title: "Aesthetics & Medspas",
         body: "Fill your booking calendar, handle patient inquiries 24/7, and run automated reactivation campaigns.",
         image: { src: "/images/med-spa.png", alt: "Medspa client after treatment" } as Media,
         frames: [{ src: "", alt: "" }] as Media[],
-        cta: { label: "Get More Booking", href: "#contact" } as Cta,
+        cta: { label: "Get More Bookings", href: "#contact" } as Cta,
       },
       {
         title: "Contractors",
         body: "Never miss an estimate request. Our AI answers calls from the job site and books appointments instantly.",
         image: { src: "/images/constrution.png", alt: "Contractor holding blueprints" } as Media,
         frames: [{ src: "", alt: "" }] as Media[],
-        cta: { label: "Get More Booking", href: "#contact" } as Cta,
+        cta: { label: "Get More Bookings", href: "#contact" } as Cta,
       },
     ],
   },

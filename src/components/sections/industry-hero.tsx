@@ -1,4 +1,5 @@
 import type { Media as MediaItem } from "@/content/home";
+import type { HeroPhoto } from "@/content/hero-photos";
 import type { IndustryContent } from "@/content/industry";
 import { HeroIcons } from "../hero-icons";
 import { ReelSlider } from "../reel-slider";
@@ -10,8 +11,18 @@ import { Button, Container, Media, Tick } from "../ui";
  * badge and heading are left out (PageShell hands the clips over). Without
  * reels it is the centred hero it always was.
  */
-export function IndustryHero({ data, reels }: { data: IndustryContent["hero"]; reels?: MediaItem[] }) {
+export function IndustryHero({
+  data,
+  reels,
+  photo,
+}: {
+  data: IndustryContent["hero"];
+  reels?: MediaItem[];
+  /** Used when the page has no background of its own (see content/hero-photos.ts). */
+  photo?: HeroPhoto;
+}) {
   const split = Boolean(reels?.length);
+  const fallback = !data.background.src && photo;
   // centred alone; left-aligned beside the clips from lg, centred above them below it
   const align = split ? "text-center lg:text-left" : "text-center";
   const block = split ? "mx-auto lg:mx-0" : "mx-auto";
@@ -88,15 +99,35 @@ export function IndustryHero({ data, reels }: { data: IndustryContent["hero"]; r
     <section className={`relative z-10 overflow-hidden pb-14 pt-36 sm:pt-40 ${split ? "lg:pt-44" : "lg:pt-48"}`}>
       {/* the illustration behind the copy. An empty src renders the dashed
           placeholder, so the layout is final before the artwork exists. */}
-      <Media
-        image={data.background}
-        variant="plain"
-        sizes="100vw"
-        priority
-        className="absolute inset-0 -z-10 h-full w-full"
+      {fallback ? (
+        <div
+          className="absolute inset-0 -z-10 h-full w-full [&_img]:object-[var(--pos-m)] lg:[&_img]:object-[var(--pos-d)]"
+          style={{ "--pos-m": photo.mobilePosition, "--pos-d": photo.position } as React.CSSProperties}
+        >
+          <Media image={photo} variant="plain" sizes="100vw" priority className="h-full w-full" />
+        </div>
+      ) : (
+        <Media
+          image={data.background}
+          variant="plain"
+          sizes="100vw"
+          priority
+          className="absolute inset-0 -z-10 h-full w-full"
+        />
+      )}
+      {/* scrim: keeps the copy readable whatever artwork lands back there. Over
+          a photo it fades out toward the edges (or the right, beside the
+          clips) so the picture still reads. */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 -z-1 ${
+          !fallback
+            ? "bg-white/72"
+            : split
+              ? "bg-page/85 lg:bg-[linear-gradient(90deg,rgba(248,248,249,0.95)_0%,rgba(248,248,249,0.88)_42%,rgba(248,248,249,0.35)_75%,rgba(248,248,249,0.15)_100%)]"
+              : "bg-page/85 lg:bg-[radial-gradient(ellipse_46%_62%_at_50%_52%,rgba(248,248,249,0.95)_0%,rgba(248,248,249,0.86)_55%,rgba(248,248,249,0.35)_100%)]"
+        }`}
       />
-      {/* scrim: keeps the copy readable whatever artwork lands back there */}
-      <div aria-hidden="true" className="absolute inset-0 -z-1 bg-white/72" />
 
       <Container>
         {split && reels ? (

@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react";
 import type { BlogContent } from "@/content/blog";
 import type { GlobalContent } from "@/content/global";
+import { heroPhotoFor } from "@/content/hero-photos";
 import type { HomeContent, Media } from "@/content/home";
 import type { IndustryContent } from "@/content/industry";
 import type { LegalDoc } from "@/content/legal";
@@ -74,7 +75,9 @@ const RENDER: Record<string, Render> = {
 
   hero: (d: HomeContent["hero"]) => <Hero data={d} />,
   heroVideo: (d: HomeContent["heroVideo"]) => <HeroVideo data={d} />,
-  industryHero: (d: IndustryContent["hero"] & { reels?: Media[] }) => <IndustryHero data={d} reels={d.reels} />,
+  industryHero: (d: IndustryContent["hero"] & { reels?: Media[] }, ctx) => (
+    <IndustryHero data={d} reels={d.reels} photo={heroPhotoFor(ctx.pageKey)} />
+  ),
 
   intro: (d: HomeContent["intro"]) => <Intro data={d} />,
   bento: (d: HomeContent["bento"]) => <Bento data={d} />,

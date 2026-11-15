@@ -100,7 +100,7 @@ export default function Footer({
               key: "whatsapp",
               href: whatsappLink(data.contact.whatsapp),
               label: "Chat on WhatsApp",
-              value: data.contact.whatsapp,
+              value: isPlaceholderNumber(data.contact.whatsapp) ? "" : data.contact.whatsapp,
               icon: <SocialIcon name="WhatsApp" className="size-5" />,
               tone: "bg-[#25D366] text-white",
               external: true,
@@ -178,6 +178,15 @@ export default function Footer({
  * international number, digits only; a bare ten-digit number is taken as a US
  * one, which is where this business is.
  */
+/**
+ * A 555 area code is a fictional US number (the template default was
+ * "(555) 989-9218"). Showing it sends visitors to a WhatsApp chat that does not
+ * exist, so the card hides until a real number is saved in the CMS.
+ */
+function isPlaceholderNumber(number: string) {
+  return /^\+?1?555/.test(number.replace(/\D/g, ""));
+}
+
 function whatsappLink(number: string) {
   const digits = number.replace(/\D/g, "");
   return `https://wa.me/${digits.length === 10 ? `1${digits}` : digits}`;

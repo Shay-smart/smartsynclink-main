@@ -10,11 +10,10 @@ import { Eyebrow, Hl, SolutionFaq, SolutionSection } from "@/components/solution
 import { Button, Container, Media } from "@/components/ui";
 import { getGlobalContent } from "@/lib/content";
 import { getService, listServices, type Service } from "@/lib/services";
+import { SITE_URL as SITE } from "@/lib/site";
 import { frontMatter, pageSections, plain, splitFaq } from "@/lib/solution-page";
 
 export const revalidate = 60;
-
-const SITE = "https://smartsynclink.com";
 
 /** Every solution page ends on these two: a demo call (opens the calendar) and the plans. */
 const DEMO = { label: "Book a Live Demo", href: "#call" };
