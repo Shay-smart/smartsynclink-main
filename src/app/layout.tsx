@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
+import { Analytics } from "@/components/analytics";
 import { ChatWidget } from "@/components/chat-widget";
 import { DemoModal } from "@/components/demo-modal";
 import { Calendar } from "@/components/sections/calendar";
@@ -9,6 +10,7 @@ import { Loader } from "@/components/loader";
 import { PointerFill } from "@/components/pointer-fill";
 import { StageScale } from "@/components/stage-scale";
 import { getHomeContent } from "@/lib/content";
+import { SITE_URL } from "@/lib/site";
 
 // Inter variable: opsz 14→32, wght 100→900 (verified from the fvar table).
 // opsz 32 IS the Display cut. globals.css pins the axis there for every
@@ -22,9 +24,17 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
+  // makes every relative canonical and og:image URL absolute, on www
+  metadataBase: new URL(SITE_URL),
   title: "SmartSyncLink — Never Lose Another Lead Again",
   description:
     "AI answers calls, replies to messages, books appointments, and follows up automatically so your business closes more customers without hiring more staff.",
+  openGraph: {
+    type: "website",
+    siteName: "SmartSyncLink",
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image" },
   other: {
     'facebook-domain-verification': 'kssgurfudqyqy0mt2vq0wctotfxy5d',
   },
@@ -50,6 +60,7 @@ export default async function RootLayout({
         <PointerFill />
         <StageScale />
         <ChatWidget />
+        <Analytics />
 
         <Script id="fb-pixel" strategy="afterInteractive">
           {`

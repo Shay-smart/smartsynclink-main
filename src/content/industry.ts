@@ -67,7 +67,7 @@ export const defaultIndustry = {
     body: "A custom website for your treatments, designed, built and hosted by us. Every form, chat and call from it goes straight into your SmartSync Suite.",
     body2:
       "There, AI answers in seconds, qualifies the lead and books the consultation. Your new site doesn't just look good, it fills your calendar.",
-    primary: { label: "Get More Booking", href: "#contact" } as Cta,
+    primary: { label: "Get More Bookings", href: "#contact" } as Cta,
     secondary: { label: "See How It Works", href: "#journey" } as Cta,
     stats: [
       "Custom Website",
@@ -92,7 +92,7 @@ export const defaultIndustry = {
       "Then they leave.",
       "Without the right experience and follow-up, that interested prospect can disappear before they ever book.",
     ],
-    cta: { label: "Get More Booking", href: "#contact" } as Cta,
+    cta: { label: "Get More Bookings", href: "#contact" } as Cta,
     /** The "Did You Know?" band shown above this section. Empty heading hides it. */
     notice: {
       eyebrow: "Did You Know?",
