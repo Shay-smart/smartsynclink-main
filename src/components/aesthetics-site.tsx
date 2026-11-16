@@ -12,11 +12,6 @@ import { BOARD, Box, Ico, MUTED, T } from "./suite-mockup";
  */
 
 const SHOT = "/images/work/aesthetics/";
-/**
- * The home page's copy of the same site, re-shot with a different hero photo
- * so the home page doesn't repeat the aesthetics page. The sticky bar stays shared.
- */
-const HOME_SHOT = "/images/work/aesthetics-home/";
 /** Its address is not known here, so the address bar names the site instead. */
 const ADDRESS = "Aesthetics Med Spa";
 
@@ -34,11 +29,11 @@ const deskPoint = (x: number, y: number): Point => [x * K, 46 + y * K];
 export const AESTHETICS_FORM = deskPoint(1057, 173);
 export const AESTHETICS_CALL = deskPoint(1365, 102);
 
-function Desktop({ shot }: { shot: string }) {
+export function AestheticsSite() {
   return (
     <div style={{ position: "absolute", inset: 0, background: "#fff" }}>
       <img
-        src={`${shot}desktop.webp`}
+        src={`${SHOT}desktop.webp`}
         alt=""
         loading="lazy"
         decoding="async"
@@ -61,11 +56,11 @@ const BAR_TOP = MOBILE.h - BAR_H;
 /** Beside the phone's chat bubble, on the bar clear of its label, for the section's third pin. */
 export const AESTHETICS_CHAT: Point = [234, BAR_TOP + 24];
 
-function Mobile({ shot }: { shot: string }) {
+export function AestheticsSiteMobile() {
   return (
     <Box x={MOBILE.x} y={MOBILE.y} w={MOBILE.w} h={MOBILE.h} style={{ background: "#fff", overflow: "hidden" }}>
       <img
-        src={`${shot}mobile.webp`}
+        src={`${SHOT}mobile.webp`}
         alt=""
         loading="lazy"
         decoding="async"
@@ -93,10 +88,3 @@ function Mobile({ shot }: { shot: string }) {
     </Box>
   );
 }
-
-export const AestheticsSite = () => <Desktop shot={SHOT} />;
-export const AestheticsSiteMobile = () => <Mobile shot={SHOT} />;
-
-/** The home page's version: the same site and pins, with the home hero photo. */
-export const AestheticsSiteHome = () => <Desktop shot={HOME_SHOT} />;
-export const AestheticsSiteHomeMobile = () => <Mobile shot={HOME_SHOT} />;

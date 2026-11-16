@@ -1,14 +1,6 @@
 import type { ComponentType } from "react";
 import type { Story } from "@/lib/stage-intro";
-import {
-  AESTHETICS_CALL,
-  AESTHETICS_CHAT,
-  AESTHETICS_FORM,
-  AestheticsSite,
-  AestheticsSiteHome,
-  AestheticsSiteHomeMobile,
-  AestheticsSiteMobile,
-} from "./aesthetics-site";
+import { AESTHETICS_CALL, AESTHETICS_CHAT, AESTHETICS_FORM, AestheticsSite, AestheticsSiteMobile } from "./aesthetics-site";
 import { CONTRACTOR_CALL, ContractorSite, ContractorSiteMobile } from "./contractor-site";
 import { REALTOR_CALL, RealtorSite, RealtorSiteMobile } from "./realtor-site";
 import {
@@ -61,11 +53,4 @@ export const SHOWCASE: Record<Story, Site> = {
   medspa: { Desktop: AestheticsSite, Mobile: AestheticsSiteMobile, form: AESTHETICS_FORM, call: AESTHETICS_CALL, chat: AESTHETICS_CHAT },
   contractor: { Desktop: IronwoodSite, Mobile: IronwoodSiteMobile, form: IRONWOOD_FORM, call: IRONWOOD_CALL, chat: IRONWOOD_CHAT },
   realtor: { Desktop: BluestemSite, Mobile: BluestemSiteMobile, form: BLUESTEM_FORM, call: BLUESTEM_CALL, chat: BLUESTEM_CHAT },
-};
-
-/** The home page's med spa showcase: the same site as SHOWCASE.medspa with its own hero photo. */
-export const HOME_SHOWCASE: Site = {
-  ...SHOWCASE.medspa,
-  Desktop: AestheticsSiteHome,
-  Mobile: AestheticsSiteHomeMobile,
 };

@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { HomeContent } from "@/content/home";
 import type { Story } from "@/lib/stage-intro";
 import { Reveal } from "../reveal";
-import { HOME_SHOWCASE, SHOWCASE } from "../story-sites";
+import { SHOWCASE } from "../story-sites";
 import { BOARD, PHONE, PhoneFrame } from "../suite-mockup";
 import { SuiteLockup } from "../suite-logo";
 import { Button, Container } from "../ui";
@@ -25,9 +25,8 @@ const DESK = { w: PHONE_AT.x + PHONE.w, h: PHONE_AT.y + PHONE.h };
  * numbered pins on the three things that feed the Suite: the form, the call
  * button, the chat.
  */
-export function Site({ data, story = "medspa", home = false }: { data: HomeContent["site"]; story?: Story; home?: boolean }) {
-  // the home page shows the med spa site with its own photo, so it doesn't repeat the aesthetics page
-  const { Desktop, Mobile, form, call, chat } = home && story === "medspa" ? HOME_SHOWCASE : SHOWCASE[story];
+export function Site({ data, story = "medspa" }: { data: HomeContent["site"]; story?: Story }) {
+  const { Desktop, Mobile, form, call, chat } = SHOWCASE[story];
   // in the order of `features`: the form, the call button, the chat
   const deskPins: [number, number][] = [
     form,
