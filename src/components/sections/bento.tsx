@@ -4,7 +4,7 @@ import { AssistantOrb } from "../assistant-orb";
 import { BookingBand } from "../booking-band";
 import { CampaignTile } from "../campaign-motion";
 import { SuiteLockup, SuiteMark } from "../suite-logo";
-import { Button, CheckSolid, Container } from "../ui";
+import { Button, CheckSolid, Container, Media } from "../ui";
 import { SuiteStage } from "./suite";
 
 /**
@@ -72,7 +72,18 @@ export function Bento({ data }: { data: HomeContent["bento"] }) {
           </article>
 
           {/* smart voice ai */}
-          <article className="flex flex-col rounded-[16px] bg-surface p-9 lg:col-span-8">
+          {/* copy on the left, a photograph of the moment it's for on the
+              right; on a phone the photo sits on top */}
+          <article className="grid overflow-hidden rounded-[16px] bg-surface lg:col-span-8 md:grid-cols-[minmax(0,1fr)_minmax(0,40%)]">
+            {data.voice.photo?.src ? (
+              <Media
+                image={data.voice.photo}
+                variant="plain"
+                sizes="(max-width: 768px) 100vw, 360px"
+                className="aspect-4/3 md:order-last md:aspect-auto md:h-full"
+              />
+            ) : null}
+            <div className="flex flex-col p-6 md:p-9">
             <SuiteBadge id="bento-badge-voice" />
             <h2 className="text-[26px] font-medium tracking-[-0.02em] text-ink">
               {data.voice.heading}
@@ -82,10 +93,20 @@ export function Bento({ data }: { data: HomeContent["bento"] }) {
             </p>
             <FeatureList bullets={data.voice.bullets} />
             <Button cta={data.voice.cta} className="mt-9 w-fit" />
+            </div>
           </article>
 
           {/* smart inbox — copy */}
-          <article className="flex flex-col rounded-[26px] bg-surface p-[20px] lg:col-span-3">
+          <article className="flex flex-col overflow-hidden rounded-[26px] bg-surface lg:col-span-3">
+            {data.inbox.photo?.src ? (
+              <Media
+                image={data.inbox.photo}
+                variant="plain"
+                sizes="(max-width: 1024px) 100vw, 320px"
+                className="aspect-4/3 w-full shrink-0"
+              />
+            ) : null}
+            <div className="flex flex-1 flex-col p-[20px]">
             <SuiteBadge id="bento-badge-inbox" />
             <h2 className="text-[28px] font-medium leading-tight tracking-[-0.02em] text-ink">
               {data.inbox.heading}
@@ -95,6 +116,7 @@ export function Bento({ data }: { data: HomeContent["bento"] }) {
             </p>
             <FeatureList bullets={data.inbox.bullets} />
             <Button cta={data.inbox.cta} className="mt-8 w-fit" />
+            </div>
           </article>
 
           {/* smart inbox — the product itself, drawn, where the screenshot was */}

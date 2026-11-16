@@ -152,6 +152,14 @@ export const defaultHomeContent = {
         },
       ] as Bullet[],
       cta: { label: "Book A Demo", href: "#call" } as Cta,
+      /**
+       * The photograph beside the copy. A new field rather than an "image"
+       * one: stored content would override an image default with "".
+       */
+      photo: {
+        src: "/images/bento/voice-ai.webp",
+        alt: "A technician busy under a kitchen sink while his phone rings on the counter",
+      } as Media,
     },
     inbox: {
       heading: "All-In-One Smart Inbox",
@@ -172,6 +180,11 @@ export const defaultHomeContent = {
       ] as Bullet[],
       cta: { label: "Book A Demo", href: "#call" } as Cta,
       image: { src: "", alt: "Smart inbox interface" } as Media,
+      /** The photograph across the top of the card. */
+      photo: {
+        src: "/images/bento/smart-inbox.webp",
+        alt: "A front-desk coordinator answering every message from one laptop",
+      } as Media,
     },
     campaigns: {
       heading: "One-Click Marketing Campaigns",

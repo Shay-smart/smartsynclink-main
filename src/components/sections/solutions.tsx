@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { SolutionsContent } from "@/content/solutions";
+import { solutionPhoto } from "@/content/solution-photos";
 import { Reveal } from "../reveal";
 import { Badge, Container, Media } from "../ui";
 
@@ -84,7 +85,7 @@ export function Solutions({ data }: { data: SolutionsContent }) {
               ) : null}
 
               <Media
-                image={card.image}
+                image={solutionPhoto(card)}
                 variant="plain"
                 sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 340px"
                 className="mt-5 aspect-3/2 w-full rounded-[10px]"
